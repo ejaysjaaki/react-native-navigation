@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {NavigationContainer} from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
 import {
     ActivityIndicator,
-    AsyncStorage
 } from 'react-native';
 
 import {Center} from "./Center";
@@ -11,21 +11,24 @@ import {AppTabs} from "./AppTabs";
 import {AuthStack} from "./AuthStack";
 
 export const Routes = ({}) => {
-    const {user, login} = useContext(AuthContext);
+    const { user, setUser, login, logout } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        AsyncStorage.getItem('user').then(userString => {
-            if (userString) {
-                // decode it
-                // Login the user
-                login();
-            }
-            setLoading(false);
-        }).catch(err => {
-            console.log(err);
-            setLoading(false);
-        })
+        // check if the user is logged in or not
+        SecureStore.getItemAsync('user')
+            .then(userString => {
+                if (userString) {
+                    // decode it
+                    // login();
+                    let userObject = JSON.parse(userString)
+                    setUser(userObject);
+                }
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, []);
 
     if (loading) {
@@ -38,7 +41,7 @@ export const Routes = ({}) => {
 
     return (
         <NavigationContainer>
-            {user ? (<AppTabs />) : (<AuthStack />)}
+            {user ? <AppTabs /> : <AuthStack />}
         </NavigationContainer>
     );
 }

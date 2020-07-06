@@ -1,5 +1,6 @@
 import React, {useContext, useRef, useState, useEffect} from 'react'
 import {createStackNavigator} from "@react-navigation/stack";
+import axios from 'axios';
 import faker from "faker";
 import {AuthContext} from "../Auth/AuthProvider";
 import {
@@ -12,25 +13,47 @@ import {
 import {Center} from "./Center";
 import {addProductRoutes} from "./addProductRoutes";
 
+axios.defaults.baseURL = 'http://backstage.party.test';
+
 const Stack = createStackNavigator();
 
 function Products({navigation}) {
-    return <Center>
-        <FlatList
-            style={{width: '100%'}}
-            renderItem={({item}) => {
-                return (
-                    <Button title={item} onPress={() => {
-                        navigation.navigate("Product", {
-                            name: item
-                        });
-                    }} />
-                )
-            }}
-            keyExtractor={(product, idx) => product + idx}
-            data={Array.from(Array(50), () => faker.commerce.product())}
-        />
-    </Center>
+    const {user} = useContext(AuthContext);
+    const [name, setName] = useState(null);
+
+    useEffect(() => {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
+
+        axios.get('/user')
+            .then(response => {
+                setName(response.data.name);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, []);
+
+    return (
+        <Center>
+            <Text style={{padding: 8, backgroundColor: '#dddddd', width: '100%', textAlign: 'center'}}>
+                Hello {name}
+            </Text>
+            <FlatList
+                style={{width: '100%'}}
+                renderItem={({item}) => {
+                    return (
+                        <Button title={item} onPress={() => {
+                            navigation.navigate("Product", {
+                                name: item
+                            });
+                        }} />
+                    )
+                }}
+                keyExtractor={(product, idx) => product + idx}
+                data={Array.from(Array(50), () => faker.commerce.product())}
+            />
+        </Center>
+    )
 }
 
 export const HomeStack = ({}) => {
