@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import * as SecureStore from "expo-secure-store";
 import axios from 'axios';
 
-axios.defaults.baseURL = `${process.env.LARAVEL_API_URL}`;
+axios.defaults.baseURL = 'http://backstage.party.test';
 
 export const AuthContext = React.createContext({
     user: null,
@@ -22,7 +22,7 @@ export const AuthProvider = ({children}) => {
                 setUser,
                 error,
                 login: (email, password) => {
-                    axios.post('http://backstage.party.test/sanctum/token', {email, password, device_name: 'mobile'}).then(response => {
+                    axios.post('sanctum/token', {email, password, device_name: 'mobile'}).then(response => {
                         const userResponse = {
                             email: response.data.user.email,
                             token: response.data.token,
@@ -39,7 +39,7 @@ export const AuthProvider = ({children}) => {
                 logout: () => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
 
-                    axios.post('http://backstage.party.test/logout')
+                    axios.post('logout')
                         .then(response => {
                             setUser(null);
                             SecureStore.deleteItemAsync('user', {})

@@ -15,7 +15,7 @@ import {
 import {Center} from "./Center";
 import {addProductRoutes} from "./addProductRoutes";
 
-axios.defaults.baseURL = `${process.env.LARAVEL_API_URL}`;
+axios.defaults.baseURL = 'http://backstage.party.test';
 
 const Stack = createStackNavigator();
 
@@ -26,7 +26,7 @@ function Products({navigation}) {
     useEffect(() => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
 
-        axios.get('http://backstage.party.test/user')
+        axios.get('user')
             .then(response => {
                 setName(response.data.name);
             })
