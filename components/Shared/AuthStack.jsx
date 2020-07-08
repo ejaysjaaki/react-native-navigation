@@ -23,7 +23,6 @@ function Login({navigation}) {
                 style={{height: 40, width: 300, borderColor: '#dddddd', borderWidth: 1, padding: 8, marginBottom: 10, marginTop: 10, borderRadius: 5}}
                 onChangeText={text => setEmail(text)}
                 placeholder="email"
-                autoCompleteType='email'
                 autoCapitalize='none'
             />
             <TextInput

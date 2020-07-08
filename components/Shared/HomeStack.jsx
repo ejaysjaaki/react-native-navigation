@@ -1,19 +1,21 @@
-import React, {useContext, useRef, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {createStackNavigator} from "@react-navigation/stack";
 import axios from 'axios';
 import faker from "faker";
+import tailwind from 'tailwind-rn';
 import {AuthContext} from "../Auth/AuthProvider";
 import {
     Text,
     TouchableOpacity,
     FlatList,
     Button,
+    View,
 } from "react-native";
 
 import {Center} from "./Center";
 import {addProductRoutes} from "./addProductRoutes";
 
-axios.defaults.baseURL = 'http://backstage.party.test';
+axios.defaults.baseURL = `${process.env.LARAVEL_API_URL}`;
 
 const Stack = createStackNavigator();
 
@@ -24,22 +26,22 @@ function Products({navigation}) {
     useEffect(() => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
 
-        axios.get('/user')
+        axios.get('http://backstage.party.test/user')
             .then(response => {
                 setName(response.data.name);
             })
-            .catch(error => {
-                console.log(error);
-            })
+            .catch(error => console.log(error));
     }, []);
 
     return (
         <Center>
-            <Text style={{padding: 8, backgroundColor: '#dddddd', width: '100%', textAlign: 'center'}}>
-                Hello {name}
-            </Text>
+            <View style={tailwind('bg-teal-200 py-3 w-full items-center')}>
+                <Text style={tailwind('text-teal-900')}>
+                    Hello {name}
+                </Text>
+            </View>
             <FlatList
-                style={{width: '100%'}}
+                style={tailwind('bg-teal-100 w-full')}
                 renderItem={({item}) => {
                     return (
                         <Button title={item} onPress={() => {
@@ -82,7 +84,8 @@ export const HomeStack = ({}) => {
                                 }}>
                                 <Text style={{
                                     color: '#ffffff',
-                                    fontSize: 16
+                                    fontSize: 16,
+                                    fontWeight: 'bold'
                                 }}>
                                     Logout
                                 </Text>

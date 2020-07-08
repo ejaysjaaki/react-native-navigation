@@ -1,11 +1,7 @@
 import React from 'react'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Ionicons} from '@expo/vector-icons';
-import {
-    Text,
-} from 'react-native';
 
-import {Center} from "./Center";
 import {HomeStack} from "./HomeStack";
 import {SearchStack} from "./SearchStack";
 

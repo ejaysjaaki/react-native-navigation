@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import * as SecureStore from "expo-secure-store";
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://backstage.party.test';
+axios.defaults.baseURL = `${process.env.LARAVEL_API_URL}`;
 
 export const AuthContext = React.createContext({
     user: null,
@@ -22,19 +22,16 @@ export const AuthProvider = ({children}) => {
                 setUser,
                 error,
                 login: (email, password) => {
-                    axios.post('sanctum/token', {
-                        email,
-                        password,
-                        device_name: 'mobile',
-                    }).then(response => {
+                    axios.post('http://backstage.party.test/sanctum/token', {email, password, device_name: 'mobile'}).then(response => {
                         const userResponse = {
                             email: response.data.user.email,
                             token: response.data.token,
                         }
                         setUser(userResponse);
                         setError(null);
-                        SecureStore.setItemAsync('user', JSON.stringify(userResponse));
+                        SecureStore.setItemAsync('user', JSON.stringify(userResponse), {});
                     }).catch(error => {
+                        console.log(error);
                         const key = Object.keys(error.response.data.errors)[0];
                         setError(error.response.data.errors[key][0]);
                     })
@@ -42,12 +39,10 @@ export const AuthProvider = ({children}) => {
                 logout: () => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
 
-                    console.log(axios.defaults.headers)
-
-                    axios.get('logout')
+                    axios.post('http://backstage.party.test/logout')
                         .then(response => {
                             setUser(null);
-                            SecureStore.deleteItemAsync('user')
+                            SecureStore.deleteItemAsync('user', {})
                         })
                         .catch(error => {
                             console.log(error.message);

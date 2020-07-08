@@ -23,7 +23,7 @@ function apiCall(x = 'test') {
 }
 
 function EditProduct({route, navigation}) {
-    const [formState] = useState();
+    const [formState] = useState('');
     const submit = useRef(() => {
     });
 
