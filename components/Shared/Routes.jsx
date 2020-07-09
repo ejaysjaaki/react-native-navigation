@@ -11,7 +11,7 @@ import {AppTabs} from "./AppTabs";
 import {AuthStack} from "./AuthStack";
 
 export const Routes = ({}) => {
-    const { user, setUser, login, logout } = useContext(AuthContext);
+    const { user, setUser} = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -19,15 +19,13 @@ export const Routes = ({}) => {
         SecureStore.getItemAsync('user')
             .then(userString => {
                 if (userString) {
-                    // decode it
-                    // login();
                     let userObject = JSON.parse(userString)
                     setUser(userObject);
                 }
                 setLoading(false);
             })
-            .catch(err => {
-                console.log(err);
+            .catch(error => {
+                console.log(error.message);
             })
     }, []);
 

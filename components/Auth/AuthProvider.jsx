@@ -31,7 +31,7 @@ export const AuthProvider = ({children}) => {
                         setError(null);
                         SecureStore.setItemAsync('user', JSON.stringify(userResponse), {});
                     }).catch(error => {
-                        console.log(error);
+                        console.log(error.message);
                         const key = Object.keys(error.response.data.errors)[0];
                         setError(error.response.data.errors[key][0]);
                     })
