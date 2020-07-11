@@ -54,12 +54,11 @@ function Search({navigation}) {
                     onChangeText={inputHandler}
                     autoCapitalize='none'
                 />
-                <TouchableOpacity style={styles.textInputButton}>
-                    <Foundation name="magnifying-glass" size={24} color="#ffffff" />
-                </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={{
+                paddingBottom: 117,
+            }}>
                 {show ? <FlatList
                     style={{width: '100%'}}
                     keyExtractor={(product, idx) => product + idx}
@@ -170,11 +169,5 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         padding: 20,
         flex: 5,
-    },
-    textInputButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#ff0789',
-        flex: 1,
     }
 });

@@ -1,4 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {
+    useState,
+    useEffect,
+    useContext
+} from 'react'
 import {NavigationContainer} from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import {
