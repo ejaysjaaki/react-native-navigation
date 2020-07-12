@@ -1,14 +1,17 @@
-import React, {useState} from 'react'
+import React, {createContext, useState} from 'react'
 import * as SecureStore from "expo-secure-store";
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://backstage.party.test';
 
-export const AuthContext = React.createContext({
+export const AuthContext = createContext({
     user: null,
-    login: () => {},
-    setUser: () => {},
-    logout: () => {},
+    login: () => {
+    },
+    setUser: () => {
+    },
+    logout: () => {
+    },
 });
 
 export const AuthProvider = ({children}) => {
